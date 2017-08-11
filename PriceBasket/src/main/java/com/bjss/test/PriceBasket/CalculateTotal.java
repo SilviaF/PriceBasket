@@ -89,8 +89,6 @@ public class CalculateTotal {
 //				}
 //			}
 			
-			//Calculate offers and discounts
-			
 //		}
 		return total;
 	}
