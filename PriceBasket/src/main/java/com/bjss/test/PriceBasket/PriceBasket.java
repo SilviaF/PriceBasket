@@ -48,8 +48,7 @@ public class PriceBasket {
 		}catch (IOException e){
 			System.out.println(e.getMessage());
 		}
-
-	} 
+	}
 
 
 	/**
