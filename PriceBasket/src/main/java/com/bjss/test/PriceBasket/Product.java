@@ -2,12 +2,11 @@ package com.bjss.test.PriceBasket;
 
 import java.math.BigDecimal;
 
-public class ItemDetails {
+public class Product {
 
 	String item;
 	BigDecimal price;
 	int discount;
-	String date;
 	Boolean activeOffer;
 	int offerQuantity;
 	String offerDiscountedProduct;

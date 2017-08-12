@@ -33,19 +33,17 @@ public class PriceBasket {
 			else
 				itemsMap.put(item, 1);
 		}
-		
-		System.out.println("ItemsMap: " + itemsMap.toString());
 	}
 
 
 	public static void main ( String[] args ) {
-		String[] purchasedItems = {"Apples", "Milk", "Bread", "Apples", "Apples"}; //TODO: delete this, get it from input
+		String[] purchasedItems = {"Soup", "Milk", "Apples"}; //TODO: delete this, get it from input
 
 		try{
-			ItemDetails[] storeItems = deserializeItemDetails();
+			Product[] storeItems = deserializeItemDetails();
 			PriceBasket priceBasket = new PriceBasket(purchasedItems);
 			CalculateTotal calculateTotal = new CalculateTotal(storeItems);
-			System.out.println("Subtotal: " + POUND + calculateTotal.calculateTotal(priceBasket.itemsMap));
+			calculateTotal.calculateTotal(priceBasket.itemsMap);
 
 		}catch (IOException e){
 			System.out.println(e.getMessage());
@@ -59,86 +57,13 @@ public class PriceBasket {
 	 * @return ItemDetails[] with the deserialized Json
 	 * @throws IOException
 	 */
-	private static ItemDetails[] deserializeItemDetails() throws IOException {
+	private static Product[] deserializeItemDetails() throws IOException {
 
 		JsonReader reader = new JsonReader(new FileReader("products.json"));
-		ItemDetails[] items = new Gson().fromJson(reader, ItemDetails[].class);
+		Product[] items = new Gson().fromJson(reader, Product[].class);
 		reader.close();
 
 		return items;
 	}
-
-
-	/**
-	 * Calculates the total price to pay for the items in the basket, 
-	 * including discounts
-	 * @param purchasedItems String[] with the items purchased
-	 * @param storeItems ItemDetails[] with the products in the store, their discounts and offers
-	 * @return Total to pay by the customer
-	 */
-//	private static BigDecimal calculateTotal(String[] purchasedItems, ItemDetails[] storeItems, HashMap<String, Integer> itemsMap){
-//		int discount = 0;
-//		BigDecimal total = BigDecimal.ZERO;
-//		BigDecimal priceBd = BigDecimal.ZERO;
-//
-//		for (String basketItem : purchasedItems){
-//			for (int i=0; i<storeItems.length; i++){
-//				if (storeItems[i].item.equals(basketItem)){
-//					System.out.println("Item: " + storeItems[i].item);
-//
-//					hasOffer(storeItems[i], storeItems);
-//					discount = storeItems[i].discount;
-//					priceBd = new BigDecimal(String.valueOf(storeItems[i].price));
-//
-//					//Check whether the item has a discount
-//					priceBd = hasDiscount(storeItems[i]);
-//
-//					total = total.add(priceBd);
-//				}
-//			}
-//		}
-//
-//		return total;
-//	}
-//	
-//
-//	/**
-//	 * If the input item has a discount, applies such discount to the price,
-//	 * otherwise returns the full price
-//	 * @param discount
-//	 * @param priceBd
-//	 * @return price
-//	 */
-//	private static BigDecimal hasDiscount(ItemDetails storeItems){
-//		BigDecimal discountBd = BigDecimal.ZERO;
-//		BigDecimal priceBd = new BigDecimal(String.valueOf(storeItems.price));
-//		BigDecimal oneHundred = new BigDecimal("100");		
-//
-//		if (storeItems.discount!=0){
-//			discountBd = new BigDecimal(String.valueOf(storeItems.discount));
-//			//Calculate the percentage and apply it to the price
-//			priceBd = priceBd.subtract((discountBd.divide(oneHundred)).multiply(priceBd));
-//			System.out.println("Price after discount: " + priceBd);
-//		} else {
-//			System.out.println("Price: " + priceBd);
-//		}
-//
-//		return priceBd;
-//	}
-//
-//
-//	/**
-//	 * Determines whether the input item has an active offer and applies it accordingly
-//	 * @param purchasedItems
-//	 * @param storeItems
-//	 */
-//	private static void hasOffer(ItemDetails purchasedItems, ItemDetails[] storeItems){
-//		if (purchasedItems.activeOffer){
-//			System.out.println("There is an active offer for this product");
-//			System.out.println("Buy " + purchasedItems.offerQuantity + " " + purchasedItems.item + " and get a " + 
-//					purchasedItems.offerDiscount + "% discount on " + purchasedItems.offerDiscountedProduct + "!!");
-//
-//		}
-//	}
 
 }
