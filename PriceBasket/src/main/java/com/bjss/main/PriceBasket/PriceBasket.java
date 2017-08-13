@@ -13,6 +13,7 @@ public class PriceBasket {
 
 	//Constants
 	public static final String POUND = "\u00A3";
+	private static final String jsonFile = "resources\\products.json";
 
 	//Variables	
 	BigDecimal total;
@@ -37,16 +38,17 @@ public class PriceBasket {
 
 
 	public static void main ( String[] args ) {
-		String[] purchasedItems = {"Soup", "Milk", "Apples"}; //TODO: delete this, get it from input
-
+						
 		try{
 			ProductBean[] storeItems = deserializeItemDetails();
-			PriceBasket priceBasket = new PriceBasket(purchasedItems);
-			CalculateTotal calculateTotal = new CalculateTotal(storeItems);
-			calculateTotal.calculateTotal(priceBasket.itemsMap);
+			if (args!=null || args.length>0){
+				PriceBasket priceBasket = new PriceBasket(args);
+				CalculateTotal calculateTotal = new CalculateTotal(storeItems);
+				calculateTotal.calculateTotal(priceBasket.itemsMap);
+			}			
 
 		}catch (IOException e){
-			System.err.println(e.getMessage());
+			System.err.println("Error calculating total: " + e.getMessage());
 		}
 	}
 
@@ -57,8 +59,8 @@ public class PriceBasket {
 	 * @throws IOException
 	 */
 	private static ProductBean[] deserializeItemDetails() throws IOException {
-
-		JsonReader reader = new JsonReader(new FileReader("products.json"));
+		
+		JsonReader reader = new JsonReader(new FileReader(jsonFile));
 		ProductBean[] items = new Gson().fromJson(reader, ProductBean[].class);
 		reader.close();
 

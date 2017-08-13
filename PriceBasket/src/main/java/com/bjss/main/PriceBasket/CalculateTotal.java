@@ -1,5 +1,6 @@
 package com.bjss.main.PriceBasket;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.HashMap;
@@ -37,7 +38,7 @@ public class CalculateTotal {
 	}
 
 
-	public BigDecimal calculateTotal(HashMap<String, Integer> itemsMap){
+	public BigDecimal calculateTotal(HashMap<String, Integer> itemsMap) throws IOException {
 
 		hasOffer(storeItems, itemsMap);
 
@@ -72,8 +73,8 @@ public class CalculateTotal {
 
 		return total;
 	}
-	
-	
+
+
 	/**
 	 * Calculates discount and sums it up
 	 * @param discount
@@ -95,13 +96,15 @@ public class CalculateTotal {
 
 		for (ProductBean items : storeItems) {
 			if (items.getActiveOffer()) { //if there is an active offer for an item
-				if (basketMap.get(items.getItem()) >= items.getOfferQuantity()){ //check whether we have the amount of items required in our basket to get the discount
-					for (int i=0; i<storeItems.length; i++){
-						if (storeItems[i].getItem().equals(items.getOfferDiscountedProduct())){
-							storeItems[i].setDiscount(items.getOfferDiscount()); //set the discount for that product accordingly
-							System.out.println("Available offer. Buy " + items.getOfferQuantity() + " " + items.getItem() +
-									" and get a " + items.getOfferDiscount() + "% discount on " + items.getOfferDiscountedProduct());
-							System.out.println("--------------");
+				if (basketMap.containsKey(items.getItem())){ //if we have the product in our basket
+					if (basketMap.get(items.getItem()) >= items.getOfferQuantity()){ //check whether we have the amount of items required in our basket to get the discount
+						for (int i=0; i<storeItems.length; i++){
+							if (storeItems[i].getItem().equals(items.getOfferDiscountedProduct())){
+								storeItems[i].setDiscount(items.getOfferDiscount()); //set the discount for that product accordingly
+								System.out.println("Available offer. Buy " + items.getOfferQuantity() + " " + items.getItem() +
+										" and get a " + items.getOfferDiscount() + "% discount on " + items.getOfferDiscountedProduct());
+								System.out.println("--------------");
+							}
 						}
 					}
 				}
