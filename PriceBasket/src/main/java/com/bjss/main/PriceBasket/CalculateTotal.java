@@ -1,4 +1,4 @@
-package com.bjss.test.PriceBasket;
+package com.bjss.main.PriceBasket;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -46,26 +46,26 @@ public class CalculateTotal {
 			BigDecimal quantity = new BigDecimal(String.valueOf(product.getValue()));
 
 			for (int i=0; i<storeItems.length; i++){
-				if (storeItems[i].item.equalsIgnoreCase(itemName)){
+				if (storeItems[i].getItem().equalsIgnoreCase(itemName)){
 					discountBd = BigDecimal.ZERO;
 
-					priceBd = new BigDecimal(String.valueOf(storeItems[i].price));
+					priceBd = new BigDecimal(String.valueOf(storeItems[i].getPrice()));
 					priceBd = priceBd.multiply(quantity);
 
 					//Check whether the item has a discount
 					discountBd = hasDiscount(storeItems[i]);
 					discountBd = discountBd.divide(oneHundred).multiply(quantity); 
 					totalDiscountBd = totalDiscountBd.add(discountBd);
-					
+
 					subtotal = subtotal.add(priceBd);
 				}
 			}
 		}
-		
+
 		if (totalDiscountBd.compareTo(BigDecimal.ZERO) == 0){
 			System.out.println("(No offers availabe)");
 		}
-		
+
 		System.out.println("Subtotal: " + POUND + subtotal.setScale(2, RoundingMode.CEILING));
 		total = subtotal.subtract(totalDiscountBd);
 		System.out.println("Total: " + POUND + total.setScale(2, RoundingMode.CEILING));
@@ -73,22 +73,34 @@ public class CalculateTotal {
 		return total;
 	}
 	
+	
+	/**
+	 * Calculates discount and sums it up
+	 * @param discount
+	 * @param quantity
+	 * @return
+	 */
+	public BigDecimal calculateTotalDiscount(BigDecimal discount, BigDecimal quantity){
+		discount = discount.divide(oneHundred).multiply(quantity);
+		return totalDiscountBd.add(discount);
+	}
+
 
 	/**
 	 * Determines whether the input item has an active offer and applies it accordingly
 	 * @param purchasedItems
 	 * @param storeItems
 	 */
-	private void hasOffer(Product[] storeItems, HashMap<String, Integer> basketMap){
+	public void hasOffer(Product[] storeItems, HashMap<String, Integer> basketMap){
 
 		for (Product items : storeItems) {
-			if (items.activeOffer) { //if there is an active offer for an item
-				if (basketMap.get(items.item) == items.offerQuantity){ //check whether we have the amount of items required in our basket to get the discount
+			if (items.getActiveOffer()) { //if there is an active offer for an item
+				if (basketMap.get(items.getItem()) >= items.getOfferQuantity()){ //check whether we have the amount of items required in our basket to get the discount
 					for (int i=0; i<storeItems.length; i++){
-						if (storeItems[i].item.equals(items.offerDiscountedProduct)){
-							storeItems[i].discount=items.offerDiscount; //set the discount for that product accordingly
-							System.out.println("Available offer. Buy " + items.offerQuantity + " " + items.item +
-									" and get a " + items.offerDiscount + "% discount on " + items.offerDiscountedProduct);
+						if (storeItems[i].getItem().equals(items.getOfferDiscountedProduct())){
+							storeItems[i].setDiscount(items.getOfferDiscount()); //set the discount for that product accordingly
+							System.out.println("Available offer. Buy " + items.getOfferQuantity() + " " + items.getItem() +
+									" and get a " + items.getOfferDiscount() + "% discount on " + items.getOfferDiscountedProduct());
 							System.out.println("--------------");
 						}
 					}
@@ -104,16 +116,16 @@ public class CalculateTotal {
 	 * @param basketItem
 	 * @return discountBd
 	 */
-	private BigDecimal hasDiscount(Product basketItem){
+	public BigDecimal hasDiscount(Product basketItem){
 		BigDecimal percentage = BigDecimal.ZERO;
-		BigDecimal priceBd = new BigDecimal(String.valueOf(basketItem.price));
+		BigDecimal priceBd = new BigDecimal(String.valueOf(basketItem.getPrice()));
 
 		//Get discount value from Json. If discount is 0, no change will take place
-		percentage = new BigDecimal(String.valueOf(basketItem.discount));
+		percentage = new BigDecimal(String.valueOf(basketItem.getDiscount()));
 		discountBd = discountBd.add((percentage).multiply(priceBd));
 		if (discountBd.compareTo(BigDecimal.ZERO) != 0){
-			System.out.println(basketItem.item + " " + basketItem.discount + "% off: -" + 
-		discountBd.toBigInteger().toString() + "p");
+			System.out.println(basketItem.getItem() + " " + basketItem.getDiscount() + "% off: -" + 
+					discountBd.toBigInteger().toString() + "p");
 		}
 		return discountBd;
 	}

@@ -1,4 +1,4 @@
-package com.bjss.test.PriceBasket;
+package com.bjss.main.PriceBasket;
 
 import java.io.FileReader;
 import java.io.IOException;
@@ -13,17 +13,17 @@ public class PriceBasket {
 
 	//Constants
 	public static final String POUND = "\u00A3";
-	
+
 	//Variables	
 	BigDecimal total;
 	String[] purchasedItems;
 	HashMap<String, Integer> itemsMap = new HashMap<String, Integer>();
-	
+
 	//Constructor
 	public PriceBasket(String[] purchasedItems) {
 		this.purchasedItems = purchasedItems;
 		this.total = BigDecimal.ZERO;
-		
+
 		//Store the repetition of the purchased items in a HashMap for possible offers
 		for (int i = 0; i < purchasedItems.length; ++i) {
 			String item = purchasedItems[i];
@@ -46,7 +46,7 @@ public class PriceBasket {
 			calculateTotal.calculateTotal(priceBasket.itemsMap);
 
 		}catch (IOException e){
-			System.out.println(e.getMessage());
+			System.err.println(e.getMessage());
 		}
 	}
 
