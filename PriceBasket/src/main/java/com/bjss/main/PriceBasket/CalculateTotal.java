@@ -24,10 +24,10 @@ public class CalculateTotal {
 	BigDecimal totalDiscountBd;
 	BigDecimal subtotal;
 	BigDecimal total;
-	Product[] storeItems;
+	ProductBean[] storeItems;
 
 	//Constructor
-	public CalculateTotal(Product[] storeItems){
+	public CalculateTotal(ProductBean[] storeItems){
 		this.priceBd = BigDecimal.ZERO;
 		this.discountBd = BigDecimal.ZERO;
 		this.totalDiscountBd = BigDecimal.ZERO;
@@ -91,9 +91,9 @@ public class CalculateTotal {
 	 * @param purchasedItems
 	 * @param storeItems
 	 */
-	public void hasOffer(Product[] storeItems, HashMap<String, Integer> basketMap){
+	public void hasOffer(ProductBean[] storeItems, HashMap<String, Integer> basketMap){
 
-		for (Product items : storeItems) {
+		for (ProductBean items : storeItems) {
 			if (items.getActiveOffer()) { //if there is an active offer for an item
 				if (basketMap.get(items.getItem()) >= items.getOfferQuantity()){ //check whether we have the amount of items required in our basket to get the discount
 					for (int i=0; i<storeItems.length; i++){
@@ -116,7 +116,7 @@ public class CalculateTotal {
 	 * @param basketItem
 	 * @return discountBd
 	 */
-	public BigDecimal hasDiscount(Product basketItem){
+	public BigDecimal hasDiscount(ProductBean basketItem){
 		BigDecimal percentage = BigDecimal.ZERO;
 		BigDecimal priceBd = new BigDecimal(String.valueOf(basketItem.getPrice()));
 

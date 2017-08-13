@@ -2,7 +2,7 @@ package com.bjss.main.PriceBasket;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
-public class Product implements Serializable {
+public class ProductBean implements Serializable {
 
 	private String item;
 	private BigDecimal price;
@@ -12,7 +12,7 @@ public class Product implements Serializable {
 	private String offerDiscountedProduct;
 	private int offerDiscount;
 
-	public Product(){
+	public ProductBean(){
 		this.item = "";
 		this.price = BigDecimal.ZERO;
 		this.discount = 0;

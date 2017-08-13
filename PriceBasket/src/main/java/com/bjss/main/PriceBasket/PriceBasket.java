@@ -40,7 +40,7 @@ public class PriceBasket {
 		String[] purchasedItems = {"Soup", "Milk", "Apples"}; //TODO: delete this, get it from input
 
 		try{
-			Product[] storeItems = deserializeItemDetails();
+			ProductBean[] storeItems = deserializeItemDetails();
 			PriceBasket priceBasket = new PriceBasket(purchasedItems);
 			CalculateTotal calculateTotal = new CalculateTotal(storeItems);
 			calculateTotal.calculateTotal(priceBasket.itemsMap);
@@ -56,10 +56,10 @@ public class PriceBasket {
 	 * @return ItemDetails[] with the deserialized Json
 	 * @throws IOException
 	 */
-	private static Product[] deserializeItemDetails() throws IOException {
+	private static ProductBean[] deserializeItemDetails() throws IOException {
 
 		JsonReader reader = new JsonReader(new FileReader("products.json"));
-		Product[] items = new Gson().fromJson(reader, Product[].class);
+		ProductBean[] items = new Gson().fromJson(reader, ProductBean[].class);
 		reader.close();
 
 		return items;

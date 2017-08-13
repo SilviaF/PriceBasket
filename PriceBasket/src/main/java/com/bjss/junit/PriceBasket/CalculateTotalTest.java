@@ -11,18 +11,18 @@ import java.util.HashMap;
 import org.junit.Test;
 
 import com.bjss.main.PriceBasket.CalculateTotal;
-import com.bjss.main.PriceBasket.Product;
+import com.bjss.main.PriceBasket.ProductBean;
 import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
 
 public class CalculateTotalTest {
 
-	Product[] storeItems;
+	ProductBean[] storeItems;
 	CalculateTotal calculateTest;
 
 	public CalculateTotalTest() {
 		try{
-			Product[] storeItems = deserializeItemDetails();	
+			ProductBean[] storeItems = deserializeItemDetails();	
 			calculateTest = new CalculateTotal(storeItems);
 		} catch (Exception e){
 			System.err.println(e.getMessage());
@@ -110,9 +110,9 @@ public class CalculateTotalTest {
 	 * @return Product[] items
 	 * @throws IOException
 	 */
-	private static Product[] deserializeItemDetails() throws IOException {
+	private static ProductBean[] deserializeItemDetails() throws IOException {
 		JsonReader reader = new JsonReader(new FileReader("products.json"));
-		Product[] items = new Gson().fromJson(reader, Product[].class);
+		ProductBean[] items = new Gson().fromJson(reader, ProductBean[].class);
 		reader.close();
 
 		return items;
