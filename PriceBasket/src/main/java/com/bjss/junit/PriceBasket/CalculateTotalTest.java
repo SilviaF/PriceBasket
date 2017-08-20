@@ -19,6 +19,7 @@ public class CalculateTotalTest {
 
 	ProductBean[] storeItems;
 	CalculateTotal calculateTest;
+	private static final String jsonFile = "resources\\products.json";
 
 	public CalculateTotalTest() {
 		try{
@@ -111,7 +112,7 @@ public class CalculateTotalTest {
 	 * @throws IOException
 	 */
 	private static ProductBean[] deserializeItemDetails() throws IOException {
-		JsonReader reader = new JsonReader(new FileReader("products.json"));
+		JsonReader reader = new JsonReader(new FileReader(jsonFile));
 		ProductBean[] items = new Gson().fromJson(reader, ProductBean[].class);
 		reader.close();
 
